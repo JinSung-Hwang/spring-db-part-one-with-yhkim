@@ -64,6 +64,47 @@ public class MemberRepositoryV0 {
     }
   }
 
+  public void update(String memberId, int money) throws SQLException {
+    String sql = "update member set money=? where member_id=?";
+
+    Connection con = null;
+    PreparedStatement pstmt = null;
+
+    try {
+      con = getConnection();
+      pstmt = con.prepareStatement(sql);
+      pstmt.setInt(1, money);
+      pstmt.setString(2, memberId);
+      int resultSize = pstmt.executeUpdate();
+      System.out.println("resultSize = " + resultSize);
+    } catch (SQLException e) {
+      log.error("db error", e);
+      throw e;
+    } finally {
+      close(con, pstmt, null);
+    }
+  }
+
+  public void delete(String memberId) throws SQLException {
+    String sql = "delete from member where member_id=?";
+
+    Connection con = null;
+    PreparedStatement pstmt = null;
+
+    try {
+      con = getConnection();
+      pstmt = con.prepareStatement(sql);
+      pstmt.setString(1, memberId);
+      pstmt.executeUpdate();
+    } catch (SQLException e) {
+      log.error("db error", e);
+      throw e;
+    } finally {
+      close(con, pstmt, null);
+    }
+  }
+
+
   private void close(Connection con, Statement stmt, ResultSet rs) {
     // note: 리소스를 클로즈할때는 리소스 획득한 순서의 역순으로 close해야한다. 또한 중간에 close하다가 예외가 발생할 수 있기때문에 각 close할때마다 try-catch로 감싸야한다.
     if (rs != null) {
