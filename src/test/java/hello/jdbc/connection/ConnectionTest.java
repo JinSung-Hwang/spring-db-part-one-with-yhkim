@@ -2,6 +2,7 @@ package hello.jdbc.connection;
 
 import static hello.jdbc.connection.ConnectionConst.*;
 
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,6 +29,20 @@ public class ConnectionTest {
     // note: 예를 들어 repository가 10개이면 repository 마다 connection 정보를 넣지 않아도 된다.
     DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USER, PASSWORD);
     useDataSource(dataSource);
+  }
+
+  @Test
+  void dataSourceConnectPool() throws SQLException, InterruptedException {
+    // 커넥션 풀링
+    HikariDataSource dataSource = new HikariDataSource();
+    dataSource.setJdbcUrl(URL);
+    dataSource.setUsername(USER);
+    dataSource.setPassword(PASSWORD);
+    dataSource.setMaximumPoolSize(10);
+    dataSource.setPoolName("MyPool");
+
+    useDataSource(dataSource);
+    Thread.sleep(2000);
   }
 
   private void useDataSource(DataSource dataSource) throws SQLException {
