@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import hello.jdbc.domain.Member;
-import hello.jdbc.repository.MemberRepositoryV2;
 import hello.jdbc.repository.MemberRepositoryV3;
 import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * 트랜잭션 - 트랜잭션 매니저
@@ -35,7 +35,7 @@ class MemberServiceV3_1Test {
   void before() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USER, PASSWORD);
     memberRepository = new MemberRepositoryV3(dataSource);
-    DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+    PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
     memberService = new MemberServiceV3_1(transactionManager, memberRepository);
   }
 

@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
- * 트랜잭션 - 파라미터 전달 방식
+ * 트랜잭션 - 파라미터 전달 방식 동기화
  */
 @Slf4j
 class MemberServiceV2Test {

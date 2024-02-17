@@ -25,7 +25,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
- * 트랜잭션 - 트랜잭션 매니저
+ * 트랜잭션 - @Transactional AOP
  */
 @Slf4j
 @SpringBootTest

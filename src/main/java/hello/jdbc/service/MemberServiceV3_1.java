@@ -22,7 +22,7 @@ public class MemberServiceV3_1 {
   private final MemberRepositoryV3 memberRepository;
 
   public void accountTransfer(String fromId, String toId, int money) throws SQLException {
-    TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+    TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition()); // note: 트랜잭션이 시작된다.
     try {
       bizLogic(fromId, toId, money);
       transactionManager.commit(status);

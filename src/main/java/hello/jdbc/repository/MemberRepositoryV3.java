@@ -33,8 +33,8 @@ public class MemberRepositoryV3 {
     Connection con = null;
     PreparedStatement pstmt = null;
 
-    con = getConnection();
     try {
+      con = getConnection();
       pstmt = con.prepareStatement(sql);
       pstmt.setString(1, member.getMemberId());
       pstmt.setInt(2, member.getMoney());
@@ -128,8 +128,9 @@ public class MemberRepositoryV3 {
   private Connection getConnection() throws SQLException {
     // note: 중요함! 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해야한다.
     Connection con = DataSourceUtils.getConnection(dataSource); // note: 안쪽 코드에서 TransactionSynchronizationManager.getResource 가 호출되는데 결국엔 트랜잭션동기화매너지에서 커넥션을 가져오는것이다.
+    // note: DataSourceUtils.getConnection(dataSource)는 만약 transactionSyncronizationManager에 커넥션이 없으면 새로운 커넥션을 생성하고 있으면 threadLocal에 있는 커넥션을 반환한다.
     log.info("get connection={}, class={}", con, con.getClass());
-    return DBConnectionUtil.getConnection();
+    return con;
   }
 
 }

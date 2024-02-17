@@ -39,16 +39,16 @@ public class MemberServiceV2 {
     Member fromMember = memberRepository.findById(connection, fromId);
     Member toMember = memberRepository.findById(connection, toId);
 
-    memberRepository.update(fromId, fromMember.getMoney() - money);
+    memberRepository.update(connection, fromId, fromMember.getMoney() - money);
     validation(toMember);
-    memberRepository.update(toId, toMember.getMoney() + money);
+    memberRepository.update(connection, toId, toMember.getMoney() + money);
   }
 
   private void release(Connection connection) throws SQLException {
     if (connection != null) {
-      connection.setAutoCommit(true); // note: 커넥션 풀을 사용하면 세션은 계속 유지되기때문에 autoCommit을 다시 true로 안돌리면 커넥션을 재사용할때 autoCommit이 false인 상태가 되어있다.
-      connection.close();
       try {
+        connection.setAutoCommit(true); // note: 커넥션 풀을 사용하면 세션은 계속 유지되기때문에 autoCommit을 다시 true로 안돌리면 커넥션을 재사용할때 autoCommit이 false인 상태가 되어있다.
+        connection.close(); // note: 커넥션 풀을 사용했다면 close()를 하면 커넥션이 종료되는것이 아니라 커넥션 풀에 반납된다.
       } catch (Exception e) {
         log.info("error", e);
       }
