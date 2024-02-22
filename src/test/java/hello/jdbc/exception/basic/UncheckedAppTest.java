@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.net.ConnectException;
 import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class UncheckedAppTest {
 
   @Test
@@ -13,6 +15,17 @@ public class UncheckedAppTest {
     Controller controller = new Controller();
     assertThatThrownBy(() -> controller.request())
         .isInstanceOf(Exception.class);
+  }
+
+  @Test
+  void printEx() {
+    Controller controller = new Controller();
+    try {
+      controller.request();
+    } catch (Exception e) {
+//      e.printStackTrace();
+      log.info("ex", e);
+    }
   }
 
   static class Controller {
@@ -43,7 +56,7 @@ public class UncheckedAppTest {
       try {
         runSQL();
       } catch (SQLException e) {
-        throw new RuntimeException(e); // note: 이전 예외를 넣는다.
+        throw new RunTimeSQLException(e); // note: 예외를 전환할때는 꼭 기존 예외를 포함해서 넣어야한다. 그래야 최초 에러인 rootCause를 확인할 수 있다. 아니면 log를 찍어서 기록해둬야한다.
       }
     }
 
