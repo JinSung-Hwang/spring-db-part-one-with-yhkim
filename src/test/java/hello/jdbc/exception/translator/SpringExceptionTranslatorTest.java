@@ -44,9 +44,8 @@ public class SpringExceptionTranslatorTest {
       stmt.executeUpdate();
     } catch (SQLException e) {
       assertThat(e.getErrorCode()).isEqualTo(42122);
-      throw new BadSqlGrammarException(e);
       int errorCode = e.getErrorCode();
-      log.info("errorCode: {}", errorCode);
+      log.info("errorCode={}", errorCode);
       log.info("error", e);
     }
   }
@@ -67,6 +66,7 @@ public class SpringExceptionTranslatorTest {
       DataAccessException resultEx = exceptionTranslator.translate("select", sql, e); // note: desc, 사용한 sql, exception을 넣으면 된다.
       log.info("resultEx", resultEx);
       assertThat(resultEx.getClass()).isEqualTo(BadSqlGrammarException.class);
+      throw resultEx;
     }
   }
 
